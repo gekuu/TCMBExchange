@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+// this is version 1.0
+
 type CurrencyDay struct {
 	ID         string
 	Date       time.Time
@@ -123,7 +125,7 @@ func (c *tarih_Date) getData(CurrencyDate time.Time, XDate time.Time) *CurrencyD
 			// Elde edilen veriyi currencies.json adında JSON formatında kaydet
 
 			i := fmt.Sprintf("%.2f", currDay.Currencies[0].BanknoteSelling);
-			fmt.Println(currDay.Currencies[0].CurrencyNameTR + " / " + i )
+			fmt.Println(currDay.Currencies[0].CurrencyNameTR + " / " + i)
 
 		} else {
 			currDay = nil
@@ -150,12 +152,19 @@ func checkError(err error) {
 
 func main() {
 
-	runtime.GOMAXPROCS(2)
-	startTime := time.Now()
-	CurrencyDay := new(CurrencyDay)
-	CurrencyDate := time.Now()
-	CurrencyDay.GetData(CurrencyDate)
+	isClose := make(chan bool);
+	runtime.GOMAXPROCS(runtime.NumCPU()) // max usage! but be careful! it can't more efficent than less.
+	go func() {
+		startTime := time.Now()
+		CurrencyDay := new(CurrencyDay)
+		CurrencyDate := time.Now()
+		CurrencyDay.GetData(CurrencyDate)
+		time.Sleep(time.Second * 3);
 
-	elepsedTime := time.Since(startTime)
-	fmt.Printf("Execution Time : %s", elepsedTime)
+		elapsedTime := time.Since(startTime)
+		fmt.Printf("Execution Time : %s", elapsedTime)
+		isClose <- true;
+	}()
+	<-isClose;
+
 }
