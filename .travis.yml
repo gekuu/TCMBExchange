@@ -1,12 +1,9 @@
 language: go
 go:
- - 1.3.3
- - 1.4.2
- - 1.5.1
- - release
- - tip
-
-go_import_path: example.org/pkg/foo
+   - 1.x
+   - 1.6
+   - 1.7.x
+   - development
 
 script:
  - go test -v ./...
