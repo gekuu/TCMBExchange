@@ -151,7 +151,7 @@ func checkError(err error) {
 }
 
 func main() {
-	fmt.Printf("%v","Hello Universe!\n");
+	fmt.Printf("%v","Hello Universe!\n..");
 	isClose := make(chan bool);
 	runtime.GOMAXPROCS(runtime.NumCPU()) // max usage! but be careful! it can't more efficent than less.
 	go func() {
